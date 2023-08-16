@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\EthRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: EthRepository::class)]
 class Eth
@@ -12,6 +13,7 @@ class Eth
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[ApiResource]
     private ?int $id = null;
 
     #[ORM\Column]
