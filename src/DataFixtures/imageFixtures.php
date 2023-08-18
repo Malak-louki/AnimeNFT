@@ -5,9 +5,10 @@ namespace App\DataFixtures;
 use App\Entity\Image;
 use App\Repository\NftRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class AppFixtures extends Fixture
+class imageFixtures extends Fixture implements DependentFixtureInterface
 {
     public function __construct(protected NftRepository $nftRepository){}
     

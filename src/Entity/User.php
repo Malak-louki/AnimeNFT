@@ -39,7 +39,7 @@ class User
     #[ORM\JoinColumn(nullable: false)]
     private ?Adress $adress = null;
 
-    #[ORM\ManyToMany(targetEntity: Nft::class, inversedBy: 'users')]
+    #[ORM\ManyToMany(targetEntity: Nft::class, inversedBy: 'users', cascade: ['persist', 'remove'])]
     private Collection $nft;
 
     public function __construct()

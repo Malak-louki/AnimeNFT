@@ -8,7 +8,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use App\Repository\AdressRepository;
 
-class UserFixtures extends Fixture
+class UserFixtures extends Fixture  implements DependentFixtureInterface
 {
     public function __construct(protected AdressRepository $adressRepository)
     {
@@ -56,7 +56,7 @@ class UserFixtures extends Fixture
                 ->setPassword('bilal123')
                 ->setFirstName('Bilal')
                 ->setLastName('Bou')
-                ->setAdress($adress[3])
+                ->setAdress($adress[4])
                 ->setIsaSeller(true)
                 ->setGender(true),
         ];
