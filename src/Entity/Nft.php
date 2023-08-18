@@ -45,15 +45,17 @@ class Nft
     #[ORM\OneToMany(mappedBy: 'nft', targetEntity: Eth::class)]
     private Collection $eth;
 
-    #[ORM\OneToMany(mappedBy: 'nft', targetEntity: Category::class)]
-    private Collection $category;
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'nfts')]
+    private Collection $categories;
+
+
 
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->image = new ArrayCollection();
         $this->eth = new ArrayCollection();
-        $this->category = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -223,16 +225,15 @@ class Nft
     /**
      * @return Collection<int, Category>
      */
-    public function getCategory(): Collection
+    public function getCategories(): Collection
     {
-        return $this->category;
+        return $this->categories;
     }
 
     public function addCategory(Category $category): static
     {
-        if (!$this->category->contains($category)) {
-            $this->category->add($category);
-            $category->setNft($this);
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
         }
 
         return $this;
@@ -240,13 +241,9 @@ class Nft
 
     public function removeCategory(Category $category): static
     {
-        if ($this->category->removeElement($category)) {
-            // set the owning side to null (unless already changed)
-            if ($category->getNft() === $this) {
-                $category->setNft(null);
-            }
-        }
+        $this->categories->removeElement($category);
 
         return $this;
     }
+
 }

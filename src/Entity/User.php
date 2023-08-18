@@ -18,7 +18,7 @@ class User
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private ?string $lastName = null;
 
     #[ORM\Column(length: 255)]
     private ?string $firstName = null;
@@ -39,7 +39,7 @@ class User
     #[ORM\JoinColumn(nullable: false)]
     private ?Adress $adress = null;
 
-    #[ORM\ManyToMany(targetEntity: Nft::class, inversedBy: 'users')]
+    #[ORM\ManyToMany(targetEntity: Nft::class, inversedBy: 'users', cascade: ['persist', 'remove'])]
     private Collection $nft;
 
     public function __construct()
@@ -52,14 +52,14 @@ class User
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getLastName(): ?string
     {
-        return $this->name;
+        return $this->lastName;
     }
 
-    public function setName(string $name): static
+    public function setLastName(string $lastName): static
     {
-        $this->name = $name;
+        $this->lastName = $lastName;
 
         return $this;
     }

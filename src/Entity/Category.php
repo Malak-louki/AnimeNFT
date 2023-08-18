@@ -26,13 +26,13 @@ class Category
     #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
     private Collection $children;
 
-    #[ORM\ManyToOne(inversedBy: 'category')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Nft $nft = null;
+    #[ORM\ManyToMany(targetEntity: Nft::class, mappedBy: 'categories')]
+    private Collection $nfts;
 
     public function __construct()
     {
         $this->children = new ArrayCollection();
+        $this->nfts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -85,7 +85,7 @@ class Category
     public function removeChild(self $child): static
     {
         if ($this->children->removeElement($child)) {
-            // set the owning side to null (unless already changed)
+            // set the owning side to null (unless already changed) 
             if ($child->getParent() === $this) {
                 $child->setParent(null);
             }
@@ -94,15 +94,31 @@ class Category
         return $this;
     }
 
-    public function getNft(): ?Nft
+    /**
+     * @return Collection<int, Nft>
+     */
+    public function getNfts(): Collection
     {
-        return $this->nft;
+        return $this->nfts;
     }
 
-    public function setNft(?Nft $nft): static
+    public function addNft(Nft $nft): static
     {
-        $this->nft = $nft;
+        if (!$this->nfts->contains($nft)) {
+            $this->nfts->add($nft);
+            $nft->addCategory($this);
+        }
 
         return $this;
     }
+
+    public function removeNft(Nft $nft): static
+    {
+        if ($this->nfts->removeElement($nft)) {
+            $nft->removeCategory($this);
+        }
+
+        return $this;
+    }
+
 }
